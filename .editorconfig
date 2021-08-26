@@ -1,0 +1,14 @@
+root = true
+
+[*]
+# Indentation and spacing
+indent_size = 4
+tab_width = 4
+indent_style = space
+trim_trailing_whitespace = true
+
+# New line preferences
+end_of_line = crlf
+insert_final_newline = true
+
+charset = utf-8
