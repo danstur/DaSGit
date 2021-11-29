@@ -11,25 +11,25 @@
 function Merge-Branch() {
     param(
         [Parameter(Position=0)]
-        [ValidateSet([BranchesValuesGenerator])]
-        [string]$Branch = (Get-MainBranch),
+        [ValidateSet([AllBranchesValuesGenerator])]
+        [string]$Branch = "origin/$(Get-MainBranch)",
         [Parameter(Position=1)]
         [switch]$Rebase
     )
     process {
         Invoke-NativeCommand git fetch
         if ($Rebase) {
-            Invoke-NativeCommand git rebase "origin/$Branch"
+            Invoke-NativeCommand git rebase $Branch
             Invoke-NativeCommand git push --force-with-lease
         }
         else {
-            Invoke-NativeCommand git merge "origin/$Branch"
+            Invoke-NativeCommand git merge $Branch
         }
     }
 }
 
-class BranchesValuesGenerator : System.Management.Automation.IValidateSetValuesGenerator {
+class AllBranchesValuesGenerator : System.Management.Automation.IValidateSetValuesGenerator {
     [string[]] GetValidValues() {
-        return Get-Branches
+        return Get-AllBranches
     }
 }

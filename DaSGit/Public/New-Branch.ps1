@@ -17,7 +17,7 @@ function New-Branch() {
         [Parameter(Mandatory, Position=0)]
         [string]$BranchName,
         [Parameter(Position=1)]
-        [ValidateSet([RefsValuesGenerator])]
+        [ValidateSet([AllBranchesValuesGenerator])]
         [string]$SourceRef = "origin/$(Get-MainBranch)",
         [Parameter(Position=2)]
         [Switch]$PublicBranch
@@ -28,6 +28,9 @@ function New-Branch() {
         }
         Invoke-NativeCommand git fetch
         if (-not $PublicBranch) {
+            if (-not $script:PrivateNamespaceInitialized) {
+                throw 'PrivateNamespace is not initialized.'
+            }
             $BranchName = "${script:MyNamespace}$BranchName"
         }
         Invoke-NativeCommand git checkout -b $BranchName $SourceRef --no-track
@@ -35,8 +38,8 @@ function New-Branch() {
     }
 }
 
-class RefsValuesGenerator : System.Management.Automation.IValidateSetValuesGenerator {
+class AllBranchesValuesGenerator : System.Management.Automation.IValidateSetValuesGenerator {
     [string[]] GetValidValues() {
-        return Get-Refs
+        return @('.') + (Get-AllBranches)
     }
 }

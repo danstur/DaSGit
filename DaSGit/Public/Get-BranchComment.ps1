@@ -8,11 +8,21 @@
 function Get-BranchComment() {
     param(
         [Parameter(Position=0)]
+        [ValidateSet([AllBranchesValuesGenerator])]
         [string]$Branch = 'HEAD'
     )
     $branchName = Invoke-NativeCommand git rev-parse --abbrev-ref $Branch
     $configValue = "branch.$branchName.description"
     $comment = git config $configValue
-    Invoke-NativeCommand git config $configValue
-    $comment
+    if ($LastExitCode -ne 0) {
+        Write-Error 'No comment set.'
+    } else {
+        $comment
+    }    
+}
+
+class AllBranchesValuesGenerator : System.Management.Automation.IValidateSetValuesGenerator {
+    [string[]] GetValidValues() {
+        return Get-AllBranches
+    }
 }

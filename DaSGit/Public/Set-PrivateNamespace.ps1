@@ -17,4 +17,5 @@ function Set-PrivateNamespace() {
     )
     $script:PrivateNamespace = $PrivateNamespace.Trim('/') + '/'
     $script:MyNamespace = $MyNamespace.Trim('/') + '/'
+    $script:PrivateNamespaceInitialized = $true
 }

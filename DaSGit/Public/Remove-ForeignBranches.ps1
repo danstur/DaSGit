@@ -6,6 +6,9 @@ function Remove-ForeignBranches() {
     [CmdletBinding(SupportsShouldProcess)]
     param(
     )
+    if (-not $script:PrivateNamespaceInitialized) {
+        throw 'PrivateNamespace is not initialized.'
+    }
     $heads = Invoke-NativeCommand git for-each-ref --format '%(refname:short)' refs/heads
     $foreignBranches = $heads | Where-Object {
         $_.StartsWith($script:PrivateNamespace) -and

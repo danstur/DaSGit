@@ -7,10 +7,10 @@
     .PARAMETER Branch
         Name of the branch to checkout.
 #>
-function Get-Branch() {
+function Set-Branch() {
     param(
         [Parameter(Mandatory, Position=0)]
-        [ValidateSet([BranchesValuesGenerator])]
+        [ValidateSet([LocalBranchesValuesGenerator])]
         [string]$Branch
     )
     process {
@@ -33,8 +33,8 @@ function Get-Branch() {
     }
 }
 
-class BranchesValuesGenerator : System.Management.Automation.IValidateSetValuesGenerator {
+class LocalBranchesValuesGenerator : System.Management.Automation.IValidateSetValuesGenerator {
     [string[]] GetValidValues() {
-        return Get-Branches
+        return Get-LocalBranches
     }
 }

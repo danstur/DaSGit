@@ -13,10 +13,17 @@ function Set-BranchComment() {
         [Parameter(Mandatory, Position=0)]
         [string]$Comment,
         [Parameter(Position=1)]
+        [ValidateSet([AllBranchesValuesGenerator])]
         [string]$Branch = 'HEAD'
     )
     # git branch --edit-description can be used, but opens a text editor.
     $branchName = Invoke-NativeCommand git rev-parse --abbrev-ref $Branch
     $configValue = "branch.$branchName.description"
     Invoke-NativeCommand git config $configValue $Comment
+}
+
+class AllBranchesValuesGenerator : System.Management.Automation.IValidateSetValuesGenerator {
+    [string[]] GetValidValues() {
+        return Get-AllBranches
+    }
 }

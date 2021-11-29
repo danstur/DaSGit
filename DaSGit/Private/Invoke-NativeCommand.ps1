@@ -15,6 +15,6 @@ function Invoke-NativeCommand {
     }
     Invoke-Expression "$cmd $arguments"
     if ($LastExitCode -ne 0) {
-        throw "'$command' failed with exit code $LastExitCode"
+        throw "'$cmd $arguments' failed with exit code $LastExitCode"
     }
 }
