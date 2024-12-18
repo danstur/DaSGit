@@ -9,7 +9,7 @@ function Remove-Branch() {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory, Position=0)]
-        [ValidateSet([AllBranchesValuesGenerator])]
+        [ValidateSet([LocalBranchesValuesGenerator])]
         [string]$Branch
     )
     process {
@@ -19,8 +19,8 @@ function Remove-Branch() {
     }
 }
 
-class AllBranchesValuesGenerator : System.Management.Automation.IValidateSetValuesGenerator {
+class LocalBranchesValuesGenerator : System.Management.Automation.IValidateSetValuesGenerator {
     [string[]] GetValidValues() {
-        return Get-AllBranches
+        return Get-LocalBranches
     }
 }
